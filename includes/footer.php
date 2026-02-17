@@ -21,7 +21,7 @@
         <div class="col-md-4">
             <h5>Contact</h5>
             <p>Email: support@shophub.com</p>
-            <p>Phone: +91 9876543210</p>
+            <p>Phone: +91 9**********</p>
         </div>
 
     </div>
