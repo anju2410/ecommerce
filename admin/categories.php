@@ -6,12 +6,35 @@ include "includes/header.php";
 if(isset($_POST['add'])){
     $stmt = $pdo->prepare("INSERT INTO categories (name) VALUES (?)");
     $stmt->execute([$_POST['name']]);
+    header("Location: categories.php");
+    exit;
 }
 
 /* DELETE */
 if(isset($_GET['delete'])){
     $stmt = $pdo->prepare("DELETE FROM categories WHERE id=?");
     $stmt->execute([$_GET['delete']]);
+    header("Location: categories.php");
+    exit;
+}
+
+/* FETCH FOR EDIT */
+$editCategory = null;
+if(isset($_GET['edit'])){
+    $stmt = $pdo->prepare("SELECT * FROM categories WHERE id=?");
+    $stmt->execute([$_GET['edit']]);
+    $editCategory = $stmt->fetch();
+}
+
+/* UPDATE CATEGORY */
+if(isset($_POST['update'])){
+    $stmt = $pdo->prepare("UPDATE categories SET name=? WHERE id=?");
+    $stmt->execute([
+        $_POST['name'],
+        $_POST['category_id']
+    ]);
+    header("Location: categories.php");
+    exit;
 }
 
 /* PAGINATION */
@@ -34,11 +57,30 @@ $categories = $stmt->fetchAll();
 
 <div class="card-body">
 
+<!-- ADD / UPDATE FORM -->
 <form method="POST" class="mb-3">
-<input type="text" name="name" class="form-control mb-2" placeholder="Category Name" required>
+
+<?php if($editCategory): ?>
+<input type="hidden" name="category_id" value="<?= $editCategory['id'] ?>">
+<?php endif; ?>
+
+<input type="text" 
+       name="name" 
+       class="form-control mb-2" 
+       placeholder="Category Name" 
+       value="<?= $editCategory['name'] ?? '' ?>" 
+       required>
+
+<?php if($editCategory): ?>
+<button name="update" class="btn btn-success">Update</button>
+<a href="categories.php" class="btn btn-secondary">Cancel</a>
+<?php else: ?>
 <button name="add" class="btn btn-primary">Add Category</button>
+<?php endif; ?>
+
 </form>
 
+<!-- TABLE -->
 <table class="table table-bordered table-striped">
 <tr>
 <th>ID</th>
@@ -51,12 +93,16 @@ $categories = $stmt->fetchAll();
 <td><?= $cat['id'] ?></td>
 <td><?= $cat['name'] ?></td>
 <td>
-<a href="?delete=<?= $cat['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+<a href="?edit=<?= $cat['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+<a href="?delete=<?= $cat['id'] ?>" 
+   class="btn btn-danger btn-sm"
+   onclick="return confirm('Are you sure?')">Delete</a>
 </td>
 </tr>
 <?php endforeach; ?>
 </table>
 
+<!-- PAGINATION -->
 <nav>
 <ul class="pagination">
 <?php for($i=1; $i<=$pages; $i++): ?>
