@@ -2,6 +2,8 @@
 require_once("config/db.php");
 session_start();
 
+$error = "";
+
 if(isset($_POST['login'])) {
 
     $email = trim($_POST['email']);
@@ -14,7 +16,7 @@ if(isset($_POST['login'])) {
     if($user) {
 
         // Check if user is blocked
-        if($user['status'] === 'Blocked'){
+        if(isset($user['status']) && $user['status'] === 'Blocked'){
             $error = "Your account has been blocked. Please contact admin.";
         }
 
@@ -23,7 +25,6 @@ if(isset($_POST['login'])) {
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
-
             $_SESSION['user_email'] = $user['email'];
 
             header("Location: index.php");
@@ -41,13 +42,15 @@ if(isset($_POST['login'])) {
 require_once("includes/header.php");
 ?>
 
-<h2>Login</h2>
+<div class="container mt-5" style="max-width:500px;">
+<h2 class="mb-4">Login</h2>
 
-<?php if(isset($error)): ?>
+<?php if($error): ?>
     <div class="alert alert-danger"><?php echo $error; ?></div>
 <?php endif; ?>
 
 <form method="POST">
+
     <div class="mb-3">
         <label>Email</label>
         <input type="email" name="email" class="form-control" required>
@@ -58,7 +61,15 @@ require_once("includes/header.php");
         <input type="password" name="password" class="form-control" required>
     </div>
 
-    <button type="submit" name="login" class="btn btn-success">Login</button>
+    <div class="mb-3 text-end">
+        <a href="forgot_password.php">Forgot Password?</a>
+    </div>
+
+    <button type="submit" name="login" class="btn btn-success w-100">
+        Login
+    </button>
+
 </form>
+</div>
 
 <?php require_once("includes/footer.php"); ?>
