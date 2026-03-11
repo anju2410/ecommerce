@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2026 at 07:10 AM
+-- Generation Time: Mar 11, 2026 at 04:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -59,7 +59,6 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`) VALUES
-(9, 1, 2, 1),
 (12, 2, 2, 1);
 
 -- --------------------------------------------------------
@@ -93,6 +92,11 @@ INSERT INTO `categories` (`id`, `name`, `created_at`) VALUES
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `pincode` varchar(10) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `payment_method` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -104,19 +108,20 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `total_amount`, `payment_method`, `created_at`, `payment_status`, `order_status`) VALUES
-(1, 1, 32999.00, 'COD', '2026-02-12 06:47:41', 'Pending', 'Processing'),
-(2, 1, 79999.00, 'Credit Card', '2026-02-12 06:52:17', 'Paid', 'Processing'),
-(3, 1, 32999.00, 'Credit Card', '2026-02-13 04:37:02', 'Paid', 'Processing'),
-(4, 1, 79999.00, 'Card', '2026-02-13 04:39:57', 'Pending', 'Pending'),
-(5, 1, 79999.00, 'Card', '2026-02-13 04:44:06', 'Pending', 'Pending'),
-(6, 1, 55999.00, 'Card', '2026-02-13 04:48:15', 'Pending', 'Pending'),
-(7, 1, 55999.00, 'Card', '2026-02-13 04:56:40', 'Pending', 'Shipped'),
-(8, 1, 55999.00, 'Card', '2026-02-13 05:07:07', 'Pending', 'Pending'),
-(9, 2, 2999.00, 'COD', '2026-02-16 13:30:30', 'Pending', 'Processing'),
-(10, 2, 2999.00, 'COD', '2026-02-16 13:35:45', 'Pending', 'Delivered'),
-(11, 2, 55999.00, 'Card', '2026-02-16 13:36:37', 'Paid', 'Processing'),
-(12, 6, 112998.00, 'Card', '2026-02-17 06:15:55', 'Paid', 'Delivered');
+INSERT INTO `orders` (`id`, `user_id`, `full_name`, `phone`, `address`, `city`, `pincode`, `total_amount`, `payment_method`, `created_at`, `payment_status`, `order_status`) VALUES
+(1, 1, NULL, NULL, NULL, NULL, NULL, 32999.00, 'COD', '2026-02-12 06:47:41', 'Pending', 'Processing'),
+(2, 1, NULL, NULL, NULL, NULL, NULL, 79999.00, 'Credit Card', '2026-02-12 06:52:17', 'Paid', 'Processing'),
+(3, 1, NULL, NULL, NULL, NULL, NULL, 32999.00, 'Credit Card', '2026-02-13 04:37:02', 'Paid', 'Processing'),
+(4, 1, NULL, NULL, NULL, NULL, NULL, 79999.00, 'Card', '2026-02-13 04:39:57', 'Pending', 'Pending'),
+(5, 1, NULL, NULL, NULL, NULL, NULL, 79999.00, 'Card', '2026-02-13 04:44:06', 'Pending', 'Pending'),
+(6, 1, NULL, NULL, NULL, NULL, NULL, 55999.00, 'Card', '2026-02-13 04:48:15', 'Pending', 'Pending'),
+(7, 1, NULL, NULL, NULL, NULL, NULL, 55999.00, 'Card', '2026-02-13 04:56:40', 'Pending', 'Shipped'),
+(8, 1, NULL, NULL, NULL, NULL, NULL, 55999.00, 'Card', '2026-02-13 05:07:07', 'Pending', 'Pending'),
+(9, 2, NULL, NULL, NULL, NULL, NULL, 2999.00, 'COD', '2026-02-16 13:30:30', 'Pending', 'Processing'),
+(10, 2, NULL, NULL, NULL, NULL, NULL, 2999.00, 'COD', '2026-02-16 13:35:45', 'Pending', 'Delivered'),
+(11, 2, NULL, NULL, NULL, NULL, NULL, 55999.00, 'Card', '2026-02-16 13:36:37', 'Paid', 'Processing'),
+(12, 6, NULL, NULL, NULL, NULL, NULL, 112998.00, 'Card', '2026-02-17 06:15:55', 'Paid', 'Delivered'),
+(13, 1, 'Anjana Modi', '634782392', 'vastral', 'Ahmedabad', '38045', 55999.00, 'COD', '2026-03-11 03:16:37', 'Pending', 'Processing');
 
 -- --------------------------------------------------------
 
@@ -149,7 +154,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) 
 (10, 10, 5, 1, 2999.00),
 (11, 11, 2, 1, 55999.00),
 (12, 12, 1, 1, 79999.00),
-(13, 12, 3, 1, 32999.00);
+(13, 12, 3, 1, 32999.00),
+(14, 13, 2, 1, 55999.00);
 
 -- --------------------------------------------------------
 
@@ -346,13 +352,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `products`
